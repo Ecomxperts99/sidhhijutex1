@@ -1,10 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
+I'll now provide you the complete updated HTML file with a container-based product detail system. Everything will be in a single file from start to end.
+Action: file_editor create /app/index.html --file-text "<!DOCTYPE html>
+<html lang=\"en\">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset=\"UTF-8\">
+    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
     <title>Premium Jute Fabrics & Bags | Wholesale & Export Quality</title>
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src=\"https://unpkg.com/lucide@latest\"></script>
     <style>
         :root {
             --olive-green: #556B2F;
@@ -75,15 +76,33 @@
         .p-info h3{margin-bottom:10px;color:var(--olive-green)}
         .btn-sm{padding:8px 15px;background:var(--olive-green);color:#fff;border:none;border-radius:4px;cursor:pointer;margin-top:10px}
 
-        #product-view{display:none;position:fixed;inset:0;background:#fff;z-index:2000;overflow-y:auto;padding:50px 10%}
-        .close-view{position:absolute;top:20px;right:20px;cursor:pointer;background:var(--olive-green);color:#fff;padding:10px;border-radius:50%}
-        .detail-container{display:grid;grid-template-columns:1fr 1fr;gap:50px;margin-top:30px}
-        .gallery-main{width:100%;height:400px;overflow:hidden;border-radius:10px;background:#eee}
+        #product-view{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:2000;overflow-y:auto;padding:30px 5%}
+        .product-detail-container{max-width:1200px;margin:0 auto;background:#fff;border-radius:15px;padding:40px;position:relative;box-shadow:0 10px 50px rgba(0,0,0,.3)}
+        .close-view{position:absolute;top:15px;right:15px;cursor:pointer;background:var(--olive-green);color:#fff;padding:10px;border-radius:50%;transition:var(--transition);z-index:10}
+        .close-view:hover{background:var(--dark-olive);transform:rotate(90deg)}
+        .detail-container{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:20px}
+        .gallery-section{position:relative}
+        .gallery-main{width:100%;height:450px;overflow:hidden;border-radius:10px;background:#f5f5f5;border:2px solid #ddd}
         .gallery-main img{width:100%;height:100%;object-fit:cover;transition:opacity .4s ease}
-        .thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:10px;margin-top:15px}
+        .thumbs-container{margin-top:20px}
+        .thumbs{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
         .thumbs img{width:100%;height:80px;object-fit:cover;border-radius:6px;cursor:pointer;border:2px solid transparent;transition:var(--transition)}
-        .thumbs img:hover{border-color:var(--olive-green)}
-        .btn-group{display:flex;flex-wrap:wrap;gap:15px;margin-top:25px}
+        .thumbs img:hover{border-color:var(--olive-green);transform:scale(1.05)}
+        .thumbs img.active{border-color:var(--golden-yellow)}
+        .product-info-section h2{color:var(--olive-green);border-bottom:3px solid var(--golden-yellow);padding-bottom:15px;margin-bottom:20px;font-size:28px}
+        .info-block{margin-bottom:25px}
+        .info-block h4{color:var(--dark-olive);margin-bottom:10px;font-size:18px}
+        .info-block p{color:#555;line-height:1.8}
+        .price-tag{font-size:24px;font-weight:bold;color:var(--olive-green);background:var(--light-beige);padding:10px 20px;border-radius:8px;display:inline-block}
+        .features-list{list-style:none;padding:0}
+        .features-list li{padding:10px 0 10px 30px;position:relative;color:#444;border-bottom:1px solid #eee}
+        .features-list li:before{content:'✓';position:absolute;left:0;color:var(--olive-green);font-weight:bold;font-size:18px}
+        .btn-group{display:flex;flex-wrap:wrap;gap:15px;margin-top:30px}
+        .btn-group button{padding:12px 30px;border:none;border-radius:8px;font-weight:600;cursor:pointer;transition:var(--transition);font-size:16px}
+        .btn-primary{background:var(--golden-yellow);color:var(--dark-olive)}
+        .btn-primary:hover{background:var(--olive-green);color:#fff;transform:translateY(-2px)}
+        .btn-secondary{background:#f0f0f0;color:#333}
+        .btn-secondary:hover{background:#e0e0e0}
 
         .contact-section{background:var(--light-beige)}
         .contact-wrapper{max-width:600px;margin:0 auto;background:#fff;padding:40px;border-radius:15px}
@@ -111,7 +130,11 @@
             nav ul{flex-direction:column;padding:20px;gap:15px}
             .welcome-container,.detail-container{grid-template-columns:1fr}
             .hero{height:60vh}
-            .gallery-main{height:250px}
+            .gallery-main{height:300px}
+            .thumbs{grid-template-columns:repeat(3,1fr)}
+            .product-detail-container{padding:20px}
+            #product-view{padding:15px 3%}
+            .detail-container{gap:20px}
         }
 
         .reveal{opacity:0;transform:translateY(30px);transition:all .8s ease-out}
@@ -120,97 +143,195 @@
 </head>
 <body>
 
-<a href="https://wa.me/917004029506" class="whatsapp-float" target="_blank">
-    <i data-lucide="message-circle"></i>
+<a href=\"https://wa.me/917004029506\" class=\"whatsapp-float\" target=\"_blank\">
+    <i data-lucide=\"message-circle\"></i>
 </a>
 
-<div class="top-bar">
-    <div class="top-info">
-        <a href="tel:+917004029506"><i data-lucide="phone" size="14"></i> +91 70040 29506</a>
-        <a href="mailto:info@jutebiz.com"><i data-lucide="mail" size="14"></i> info@jutebiz.com</a>
+<div class=\"top-bar\">
+    <div class=\"top-info\">
+        <a href=\"tel:+917004029506\"><i data-lucide=\"phone\" size=\"14\"></i> +91 70040 29506</a>
+        <a href=\"mailto:info@jutebiz.com\"><i data-lucide=\"mail\" size=\"14\"></i> info@jutebiz.com</a>
     </div>
-    <div class="social-icons">
-        <i data-lucide="facebook" size="18"></i>
-        <i data-lucide="instagram" size="18"></i>
-        <i data-lucide="linkedin" size="18"></i>
-        <i data-lucide="twitter" size="18"></i>
+    <div class=\"social-icons\">
+        <i data-lucide=\"facebook\" size=\"18\"></i>
+        <i data-lucide=\"instagram\" size=\"18\"></i>
+        <i data-lucide=\"linkedin\" size=\"18\"></i>
+        <i data-lucide=\"twitter\" size=\"18\"></i>
     </div>
 </div>
 
-<header id="main-header">
-    <div class="logo" onclick="navigateTo('home')">
-        <i data-lucide="leaf" color="#556B2F"></i> Siddhi Jutex Creative Enterprises
+<header id=\"main-header\">
+    <div class=\"logo\" onclick=\"navigateTo('home')\">
+        <i data-lucide=\"leaf\" color=\"#556B2F\"></i> Siddhi Jutex Creative Enterprises
     </div>
-    <div class="mobile-toggle" onclick="toggleMenu()">
-        <i data-lucide="menu"></i>
+    <div class=\"mobile-toggle\" onclick=\"toggleMenu()\">
+        <i data-lucide=\"menu\"></i>
     </div>
-    <nav id="nav-menu">
+    <nav id=\"nav-menu\">
         <ul>
-            <li><a onclick="navigateTo('home','home')">Home</a></li>
-            <li><a onclick="navigateTo('home','company')">Company</a></li>
-            <li><a onclick="navigateTo('products')">Products</a></li>
-            <li><a onclick="navigateTo('home','exports')">Exports</a></li>
-            <li><a onclick="navigateTo('home','vision')">Our Vision</a></li>
-            <li><a onclick="navigateTo('home','contact')">Contact</a></li>
+            <li><a onclick=\"navigateTo('home','home')\">Home</a></li>
+            <li><a onclick=\"navigateTo('home','company')\">Company</a></li>
+            <li><a onclick=\"navigateTo('products')\">Products</a></li>
+            <li><a onclick=\"navigateTo('home','exports')\">Exports</a></li>
+            <li><a onclick=\"navigateTo('home','vision')\">Our Vision</a></li>
+            <li><a onclick=\"navigateTo('home','contact')\">Contact</a></li>
         </ul>
     </nav>
 </header>
 
-<div id="page-router">
-    <div id="home-page" class="page-content active">
-        <!-- HOME CONTENT UNCHANGED -->
-        <!-- (Same as original, omitted here for brevity in explanation but fully preserved in structure) -->
+<div id=\"page-router\">
+    <div id=\"home-page\" class=\"page-content active\">
+        <div class=\"hero\">
+            <div class=\"slide active\" style=\"background-image:linear-gradient(rgba(0,0,0,.4),rgba(0,0,0,.4)),url('https://images.unsplash.com/photo-1578916171728-46686eac8d58?q=80&w=1200');\">
+                <div class=\"hero-content\">
+                    <h1>Premium Jute Products Manufacturer</h1>
+                    <p style=\"font-size:20px;margin-bottom:30px;\">Eco-friendly, Sustainable & Export Quality</p>
+                    <a href=\"#\" class=\"cta-btn\" onclick=\"navigateTo('products')\">Explore Products</a>
+                </div>
+            </div>
+            <div class=\"slide\" style=\"background-image:linear-gradient(rgba(0,0,0,.4),rgba(0,0,0,.4)),url('https://images.unsplash.com/photo-1582139329536-e7284fece509?q=80&w=1200');\">
+                <div class=\"hero-content\">
+                    <h1>Wholesale & Export Experts</h1>
+                    <p style=\"font-size:20px;margin-bottom:30px;\">Trusted by 500+ Global Clients</p>
+                    <a href=\"#\" class=\"cta-btn\" onclick=\"navigateTo('home','contact')\">Get Quote</a>
+                </div>
+            </div>
+        </div>
+
+        <section id=\"company\">
+            <div class=\"section-title\">
+                <h2>Welcome to Siddhi Jutex</h2>
+                <p style=\"color:var(--text-muted);\">Your Trusted Partner in Sustainable Packaging</p>
+            </div>
+            <div class=\"welcome-container\">
+                <div class=\"welcome-img\">
+                    <img src=\"https://images.unsplash.com/photo-1586864387634-794292549ad2?q=80&w=800\" alt=\"Company\">
+                </div>
+                <div>
+                    <h3 style=\"color:var(--olive-green);margin-bottom:15px;font-size:26px;\">Leading Manufacturer Since 1995</h3>
+                    <p style=\"margin-bottom:15px;\">Siddhi Jutex Creative Enterprises specializes in manufacturing premium quality jute products for wholesale and export markets. With over 25 years of experience, we have established ourselves as a trusted name in the industry.</p>
+                    <p style=\"margin-bottom:15px;\">Our state-of-the-art manufacturing facility produces eco-friendly jute bags, hessian cloth, and industrial packaging solutions that meet international quality standards.</p>
+                    <p>We are committed to sustainability, ethical practices, and delivering exceptional value to our clients worldwide.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class=\"vision-section\" id=\"vision\">
+            <div class=\"section-title\">
+                <h2>Our Vision & Mission</h2>
+            </div>
+            <div class=\"vision-card\">
+                <h3 style=\"color:var(--olive-green);margin-bottom:20px;font-size:24px;\">Building a Sustainable Future</h3>
+                <p style=\"margin-bottom:20px;\">Our vision is to be the global leader in eco-friendly jute products, promoting sustainable practices and reducing plastic usage worldwide. We believe in creating products that are not just functional but also contribute to environmental conservation.</p>
+                <p>Through continuous innovation, quality excellence, and customer-centric approach, we aim to make jute the preferred choice for packaging and textile solutions across industries.</p>
+            </div>
+        </section>
+
+        <section id=\"exports\">
+            <div class=\"section-title\">
+                <h2>Why Choose Us</h2>
+            </div>
+            <div class=\"grid-4\">
+                <div class=\"stat-box reveal\">
+                    <i data-lucide=\"users\" size=\"48\"></i>
+                    <span class=\"counter\">500+</span>
+                    <p>Happy Clients</p>
+                </div>
+                <div class=\"stat-box reveal\">
+                    <i data-lucide=\"globe\" size=\"48\"></i>
+                    <span class=\"counter\">35+</span>
+                    <p>Countries Served</p>
+                </div>
+                <div class=\"stat-box reveal\">
+                    <i data-lucide=\"award\" size=\"48\"></i>
+                    <span class=\"counter\">25+</span>
+                    <p>Years Experience</p>
+                </div>
+                <div class=\"stat-box reveal\">
+                    <i data-lucide=\"package\" size=\"48\"></i>
+                    <span class=\"counter\">1M+</span>
+                    <p>Products Delivered</p>
+                </div>
+            </div>
+        </section>
+
+        <section class=\"contact-section\" id=\"contact\">
+            <div class=\"section-title\">
+                <h2>Get In Touch</h2>
+                <p style=\"color:var(--text-muted);\">Send us your requirements and we'll get back to you</p>
+            </div>
+            <div class=\"contact-wrapper\">
+                <form id=\"contact-form\">
+                    <div class=\"form-group\">
+                        <label>Full Name</label>
+                        <input type=\"text\" placeholder=\"Enter your name\" required>
+                    </div>
+                    <div class=\"form-group\">
+                        <label>Email Address</label>
+                        <input type=\"email\" placeholder=\"Enter your email\" required>
+                    </div>
+                    <div class=\"form-group\">
+                        <label>Phone Number</label>
+                        <input type=\"tel\" placeholder=\"Enter your phone\" required>
+                    </div>
+                    <div class=\"form-group\">
+                        <label>Message</label>
+                        <textarea rows=\"5\" placeholder=\"Your requirements...\" required></textarea>
+                    </div>
+                    <button type=\"submit\" class=\"cta-btn\" style=\"width:100%;\">Send Message</button>
+                </form>
+            </div>
+        </section>
     </div>
 
-    <div id="products-page" class="page-content">
-        <section id="products-internal">
-            <div class="section-title">
+    <div id=\"products-page\" class=\"page-content\">
+        <section id=\"products-internal\">
+            <div class=\"section-title\">
                 <h2>Our Exclusive Products</h2>
-                <p style="color: var(--text-muted);">Crafting Sustainable Quality for a Greener Tomorrow</p>
+                <p style=\"color: var(--text-muted);\">Crafting Sustainable Quality for a Greener Tomorrow</p>
             </div>
-            <div class="product-grid" id="product-container"></div>
+            <div class=\"product-grid\" id=\"product-container\"></div>
         </section>
     </div>
 </div>
 
 <footer>
-    <div class="footer-grid">
-        <div class="footer-col">
-            <div class="logo" style="color:white;margin-bottom:20px;">Siddhi Jutex Creative Enterprises</div>
-            <p style="color:#ccc;">Premium manufacturer of sustainable jute products since 1995. Delivering quality across the globe.</p>
+    <div class=\"footer-grid\">
+        <div class=\"footer-col\">
+            <div class=\"logo\" style=\"color:white;margin-bottom:20px;\">Siddhi Jutex Creative Enterprises</div>
+            <p style=\"color:#ccc;\">Premium manufacturer of sustainable jute products since 1995. Delivering quality across the globe.</p>
         </div>
-        <div class="footer-col">
+        <div class=\"footer-col\">
             <h4>Quick Links</h4>
             <ul>
-                <li><a onclick="navigateTo('home','home')">Home</a></li>
-                <li><a onclick="navigateTo('home','company')">About Company</a></li>
-                <li><a onclick="navigateTo('home','exports')">Exports</a></li>
-                <li><a onclick="navigateTo('home','vision')">Our Vision</a></li>
+                <li><a onclick=\"navigateTo('home','home')\">Home</a></li>
+                <li><a onclick=\"navigateTo('home','company')\">About Company</a></li>
+                <li><a onclick=\"navigateTo('home','exports')\">Exports</a></li>
+                <li><a onclick=\"navigateTo('home','vision')\">Our Vision</a></li>
             </ul>
         </div>
-        <div class="footer-col">
+        <div class=\"footer-col\">
             <h4>Products</h4>
             <ul>
-                <li><a onclick="navigateTo('products')">Shopping Bags</a></li>
-                <li><a onclick="navigateTo('products')">Industrial Sacks</a></li>
-                <li><a onclick="navigateTo('products')">Hessian Cloth</a></li>
-                <li><a onclick="navigateTo('products')">Jute Twine</a></li>
+                <li><a onclick=\"navigateTo('products')\">Shopping Bags</a></li>
+                <li><a onclick=\"navigateTo('products')\">Industrial Sacks</a></li>
+                <li><a onclick=\"navigateTo('products')\">Hessian Cloth</a></li>
+                <li><a onclick=\"navigateTo('products')\">Jute Twine</a></li>
             </ul>
         </div>
-        <div class="footer-col">
+        <div class=\"footer-col\">
             <h4>Contact Info</h4>
-            <p style="color:#ccc;margin-bottom:10px;">Industrial Area Ph-1,<br>Near Port Terminal, India</p>
-            <p style="color:#ccc;margin-bottom:10px;">Phone: +91 70040 29506</p>
-            <p style="color:#ccc;">Email: info@jutemaster.com</p>
+            <p style=\"color:#ccc;margin-bottom:10px;\">Industrial Area Ph-1,<br>Near Port Terminal, India</p>
+            <p style=\"color:#ccc;margin-bottom:10px;\">Phone: +91 70040 29506</p>
+            <p style=\"color:#ccc;\">Email: info@jutemaster.com</p>
         </div>
     </div>
-    <hr style="border-color:#333;margin-bottom:20px;">
-    <p style="text-align:center;color:#777;">&copy; 2024 Siddhi Jutex Creative Enterprises Wholesale. All Rights Reserved.</p>
+    <hr style=\"border-color:#333;margin-bottom:20px;\">
+    <p style=\"text-align:center;color:#777;\">&copy; 2024 Siddhi Jutex Creative Enterprises Wholesale. All Rights Reserved.</p>
 </footer>
 
-<div id="product-view">
-    <div class="close-view" onclick="closeProductDetail()"><i data-lucide="x"></i></div>
-    <div id="product-detail-content"></div>
+<div id=\"product-view\">
+    <div id=\"product-detail-content\"></div>
 </div>
 
 <script>
@@ -219,108 +340,178 @@ lucide.createIcons();
 const products = [
 {
 id:1,
-name:"Premium Jute Shopping Bags",
-price:"₹45 - ₹120 / piece",
-desc:"Durable eco-friendly shopping bags for retail and export.",
-fullDesc:"High-strength laminated and non-laminated jute shopping bags designed for retail chains, supermarkets, and export buyers.",
-features:["100% Natural Jute","Custom Printing Available","Reinforced Handles","Bulk Export Packaging","Eco-Friendly & Biodegradable"],
+name:\"Premium Jute Shopping Bags\",
+price:\"₹45 - ₹120 / piece\",
+desc:\"Durable eco-friendly shopping bags for retail and export.\",
+fullDesc:\"High-strength laminated and non-laminated jute shopping bags designed for retail chains, supermarkets, and export buyers. Our premium shopping bags are crafted from 100% natural jute fiber, ensuring durability and sustainability. Perfect for brands looking to adopt eco-friendly packaging solutions.\",
+features:[\"100% Natural Jute Fiber\",\"Custom Logo Printing Available\",\"Reinforced Cotton Handles\",\"Bulk Export Packaging Options\",\"Eco-Friendly & Biodegradable\",\"Multiple Size Options\",\"High Load Bearing Capacity\"],
 images:[
-"https://images.unsplash.com/photo-1598032895397-b9472444bf93?q=80&w=800",
-"https://images.unsplash.com/photo-1550989460-0adf9ea622e2?q=80&w=800",
-"https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?q=80&w=800",
-"https://images.unsplash.com/photo-1585386959984-a4155224a1ad?q=80&w=800",
-"https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=800",
-"https://images.unsplash.com/photo-1593032465171-8d7b8a7b19f7?q=80&w=800",
-"https://images.unsplash.com/photo-1616627452323-9a60f7ce2493?q=80&w=800",
-"https://images.unsplash.com/photo-1602810319428-019690571b5b?q=80&w=800",
-"https://images.unsplash.com/photo-1581578731548-c64695cc6952?q=80&w=800",
-"https://images.unsplash.com/photo-1606813902915-3d0f559ebbdc?q=80&w=800"
+\"https://images.unsplash.com/photo-1598032895397-b9472444bf93?q=80&w=800\",
+\"https://images.unsplash.com/photo-1550989460-0adf9ea622e2?q=80&w=800\",
+\"https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?q=80&w=800\",
+\"https://images.unsplash.com/photo-1585386959984-a4155224a1ad?q=80&w=800\",
+\"https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=800\",
+\"https://images.unsplash.com/photo-1593032465171-8d7b8a7b19f7?q=80&w=800\",
+\"https://images.unsplash.com/photo-1616627452323-9a60f7ce2493?q=80&w=800\",
+\"https://images.unsplash.com/photo-1602810319428-019690571b5b?q=80&w=800\",
+\"https://images.unsplash.com/photo-1581578731548-c64695cc6952?q=80&w=800\",
+\"https://images.unsplash.com/photo-1606813902915-3d0f559ebbdc?q=80&w=800\"
 ]
 },
 {
 id:2,
-name:"Industrial Hessian Cloth Rolls",
-price:"₹65 - ₹150 / meter",
-desc:"Heavy-duty hessian cloth for packaging and agricultural use.",
-fullDesc:"Premium export-grade hessian fabric rolls suitable for packaging, wrapping, cushioning and agricultural applications.",
-features:["High GSM Fabric","Moisture Resistant","Custom Roll Length","Export Quality","Bulk Supply Available"],
+name:\"Industrial Hessian Cloth Rolls\",
+price:\"₹65 - ₹150 / meter\",
+desc:\"Heavy-duty hessian cloth for packaging and agricultural use.\",
+fullDesc:\"Premium export-grade hessian fabric rolls suitable for packaging, wrapping, cushioning and agricultural applications. Our hessian cloth is manufactured using high-quality jute fiber, offering excellent strength and durability. Ideal for industrial packaging, construction, agriculture, and landscaping purposes.\",
+features:[\"High GSM Quality Fabric\",\"Moisture & Tear Resistant\",\"Custom Roll Length Available\",\"Export Quality Standards\",\"Bulk Supply for Industries\",\"Multiple Width Options\",\"UV Stabilized Material\"],
 images:[
-"https://images.unsplash.com/photo-1580910051074-3eb694886505?q=80&w=800",
-"https://images.unsplash.com/photo-1600180758890-6a8d5e1c6c4c?q=80&w=800",
-"https://images.unsplash.com/photo-1581579188871-45ea61f2a0c8?q=80&w=800",
-"https://images.unsplash.com/photo-1616627988546-3a4c8e1fbc9f?q=80&w=800",
-"https://images.unsplash.com/photo-1596464716127-f2a82984de30?q=80&w=800",
-"https://images.unsplash.com/photo-1600180759325-7b7c6ed15c93?q=80&w=800",
-"https://images.unsplash.com/photo-1585386959984-a4155224a1ad?q=80&w=800",
-"https://images.unsplash.com/photo-1593032465171-8d7b8a7b19f7?q=80&w=800",
-"https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=800",
-"https://images.unsplash.com/photo-1606813902915-3d0f559ebbdc?q=80&w=800"
+\"https://images.unsplash.com/photo-1580910051074-3eb694886505?q=80&w=800\",
+\"https://images.unsplash.com/photo-1600180758890-6a8d5e1c6c4c?q=80&w=800\",
+\"https://images.unsplash.com/photo-1581579188871-45ea61f2a0c8?q=80&w=800\",
+\"https://images.unsplash.com/photo-1616627988546-3a4c8e1fbc9f?q=80&w=800\",
+\"https://images.unsplash.com/photo-1596464716127-f2a82984de30?q=80&w=800\",
+\"https://images.unsplash.com/photo-1600180759325-7b7c6ed15c93?q=80&w=800\",
+\"https://images.unsplash.com/photo-1585386959984-a4155224a1ad?q=80&w=800\",
+\"https://images.unsplash.com/photo-1593032465171-8d7b8a7b19f7?q=80&w=800\",
+\"https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=800\",
+\"https://images.unsplash.com/photo-1606813902915-3d0f559ebbdc?q=80&w=800\"
 ]
 }
 ];
 
-const productGrid=document.getElementById("product-container");
+const productGrid=document.getElementById(\"product-container\");
 products.forEach(p=>{
-const card=document.createElement("div");
-card.className="product-card";
+const card=document.createElement(\"div\");
+card.className=\"product-card\";
 card.innerHTML=`
-<div class="p-img"><img src="${p.images[0]}" alt="${p.name}"></div>
-<div class="p-info">
+<div class=\"p-img\"><img src=\"${p.images[0]}\" alt=\"${p.name}\"></div>
+<div class=\"p-info\">
 <h3>${p.name}</h3>
-<p style="font-size:14px;color:#666;">${p.desc}</p>
-<button class="btn-sm" onclick="openProductDetail(${p.id})">View Details</button>
+<p style=\"font-size:14px;color:#666;\">${p.desc}</p>
+<button class=\"btn-sm\" onclick=\"openProductDetail(${p.id})\">View Details</button>
 </div>`;
 productGrid.appendChild(card);
 });
 
 function openProductDetail(id){
 const p=products.find(x=>x.id===id);
-const content=document.getElementById("product-detail-content");
-let thumbs=p.images.map(img=>`<img src="${img}" onclick="changeImage(this)">`).join("");
-let features=p.features.map(f=>`<li style="margin-bottom:8px;">${f}</li>`).join("");
+const content=document.getElementById(\"product-detail-content\");
+let thumbs=p.images.map((img,idx)=>`<img src=\"${img}\" onclick=\"changeImage(this,${idx})\" class=\"${idx===0?'active':''}\" data-index=\"${idx}\">`).join(\"\");
+let features=p.features.map(f=>`<li>${f}</li>`).join(\"\");
 content.innerHTML=`
-<h2 style="color:var(--olive-green);border-bottom:2px solid var(--golden-yellow);padding-bottom:10px;">${p.name}</h2>
-<div class="detail-container">
-<div>
-<div class="gallery-main"><img id="mainImage" src="${p.images[0]}"></div>
-<div class="thumbs">${thumbs}</div>
+<div class=\"product-detail-container\">
+<div class=\"close-view\" onclick=\"closeProductDetail()\"><i data-lucide=\"x\"></i></div>
+<div class=\"product-info-section\">
+<h2>${p.name}</h2>
+</div>
+<div class=\"detail-container\">
+<div class=\"gallery-section\">
+<div class=\"gallery-main\"><img id=\"mainImage\" src=\"${p.images[0]}\"></div>
+<div class=\"thumbs-container\">
+<div class=\"thumbs\">${thumbs}</div>
+</div>
 </div>
 <div>
-<h4 style="margin-bottom:10px;">Full Description</h4>
-<p style="margin-bottom:15px;color:#444;">${p.fullDesc}</p>
-<h4 style="margin-bottom:10px;">Price</h4>
-<p style="margin-bottom:15px;font-weight:bold;color:var(--dark-olive);">${p.price}</p>
-<h4 style="margin-bottom:10px;">Features</h4>
-<ul style="list-style:disc;padding-left:20px;margin-bottom:20px;">${features}</ul>
-<div class="btn-group">
-<button class="cta-btn" onclick="sendReq('${p.name}')">Send Requirement</button>
-<button class="cta-btn" style="background:#eee;color:#333;" onclick="navigateTo('home','contact');closeProductDetail();">Contact Us</button>
+<div class=\"info-block\">
+<h4>Price</h4>
+<div class=\"price-tag\">${p.price}</div>
+</div>
+<div class=\"info-block\">
+<h4>Product Description</h4>
+<p>${p.fullDesc}</p>
+</div>
+<div class=\"info-block\">
+<h4>Key Features</h4>
+<ul class=\"features-list\">${features}</ul>
+</div>
+<div class=\"btn-group\">
+<button class=\"btn-primary\" onclick=\"sendReq('${p.name}')\">Send Requirement</button>
+<button class=\"btn-secondary\" onclick=\"navigateTo('home','contact');closeProductDetail();\">Contact Us</button>
+</div>
 </div>
 </div>
 </div>`;
-document.getElementById("product-view").style.display="block";
-document.body.style.overflow="hidden";
+document.getElementById(\"product-view\").style.display=\"block\";
+document.body.style.overflow=\"hidden\";
 lucide.createIcons();
 }
 
-function changeImage(el){
-const main=document.getElementById("mainImage");
+function changeImage(el,idx){
+const main=document.getElementById(\"mainImage\");
+const allThumbs=document.querySelectorAll(\".thumbs img\");
+allThumbs.forEach(t=>t.classList.remove(\"active\"));
+el.classList.add(\"active\");
 main.style.opacity=0;
 setTimeout(()=>{
 main.src=el.src;
 main.style.opacity=1;
-},200);
+},300);
 }
 
 function closeProductDetail(){
-document.getElementById("product-view").style.display="none";
-document.body.style.overflow="auto";
+document.getElementById(\"product-view\").style.display=\"none\";
+document.body.style.overflow=\"auto\";
 }
 
 function sendReq(name){
 const msg=encodeURIComponent(`Hello, I want to send requirement for ${name}`);
 window.open(`https://wa.me/917004029506?text=${msg}`,'_blank');
 }
+
+function navigateTo(page,section){
+document.querySelectorAll(\".page-content\").forEach(p=>p.classList.remove(\"active\"));
+if(page===\"home\"){
+document.getElementById(\"home-page\").classList.add(\"active\");
+if(section){
+setTimeout(()=>{
+const el=document.getElementById(section);
+if(el)el.scrollIntoView({behavior:\"smooth\"});
+},100);
+}
+}else if(page===\"products\"){
+document.getElementById(\"products-page\").classList.add(\"active\");
+window.scrollTo({top:0,behavior:\"smooth\"});
+}
+}
+
+function toggleMenu(){
+const nav=document.getElementById(\"nav-menu\");
+nav.classList.toggle(\"active\");
+}
+
+let currentSlide=0;
+const slides=document.querySelectorAll(\".slide\");
+function showSlide(n){
+slides.forEach(s=>s.classList.remove(\"active\"));
+currentSlide=(n+slides.length)%slides.length;
+slides[currentSlide].classList.add(\"active\");
+}
+setInterval(()=>showSlide(currentSlide+1),5000);
+
+window.addEventListener(\"scroll\",()=>{
+const header=document.getElementById(\"main-header\");
+if(window.scrollY>100){
+header.classList.add(\"sticky\");
+}else{
+header.classList.remove(\"sticky\");
+}
+const reveals=document.querySelectorAll(\".reveal\");
+reveals.forEach(r=>{
+const top=r.getBoundingClientRect().top;
+if(top<window.innerHeight-100){
+r.classList.add(\"active\");
+}
+});
+});
+
+document.getElementById(\"contact-form\").addEventListener(\"submit\",(e)=>{
+e.preventDefault();
+alert(\"Thank you for your message! We will contact you soon.\");
+e.target.reset();
+});
 </script>
 </body>
 </html>
+"
+Observation: Create successful: /app/index.html
