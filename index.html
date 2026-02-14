@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Siddhi Jutex | Jute Fabrics & Bags</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --olive-green: #556B2F;
+            --light-beige: #F5F5DC;
+            --white: #FFFFFF;
+            --golden-yellow: #FFD700;
+            --dark-olive: #3d4d21;
+            --text-main: #333333;
+            --text-muted: #666666;
+            --transition: all 0.3s ease-in-out;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+
+        body { background-color: var(--white); color: var(--text-main); overflow-x: hidden; line-height: 1.6; }
+
+        /* --- Top Bar --- */
+        .top-bar { background-color: var(--olive-green); color: var(--white); padding: 8px 5%; display: flex; justify-content: space-between; align-items: center; font-size: 14px; }
+        .top-info { display: flex; gap: 20px; }
+        .top-info a { color: white; text-decoration: none; display: flex; align-items: center; gap: 5px; }
+        .social-icons { display: flex; gap: 15px; cursor: pointer; }
+
+        /* --- Header --- */
+        header { background: var(--white); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
+        .logo { font-size: 24px; font-weight: 800; color: var(--olive-green); display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        nav ul { display: flex; list-style: none; gap: 25px; }
+        nav ul li a { text-decoration: none; color: var(--text-main); font-weight: 600; cursor: pointer; transition: var(--transition); }
+        nav ul li a:hover { color: var(--olive-green); }
+
+        /* --- Hero --- */
+        .hero { height: 85vh; position: relative; overflow: hidden; }
+        .slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1s; display: flex; align-items: center; justify-content: center; text-align: center; background-size: cover; background-position: center; color: white; }
+        .slide.active { opacity: 1; }
+        .slide::before { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,0.4); }
+        .hero-content { position: relative; z-index: 10; max-width: 800px; padding: 20px; }
+        .cta-btn { background: var(--golden-yellow); color: var(--dark-olive); padding: 15px 35px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; text-decoration: none; display: inline-block; transition: var(--transition); }
+        .cta-btn:hover { transform: scale(1.05); background: var(--olive-green); color: white; }
+
+        /* --- Products --- */
+        section { padding: 80px 10%; }
+        .section-title { text-align: center; margin-bottom: 50px; }
+        .section-title h2 { color: var(--olive-green); font-size: 32px; position: relative; padding-bottom: 10px; }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; }
+        .product-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.1); transition: 0.3s; }
+        .product-card:hover { transform: translateY(-10px); }
+        .p-img { height: 250px; overflow: hidden; }
+        .p-img img { width: 100%; height: 100%; object-fit: cover; }
+        .p-info { padding: 25px; }
+
+        /* --- Product Details Modal --- */
+        #product-view { display: none; position: fixed; inset: 0; background: white; z-index: 2000; overflow-y: auto; padding: 50px 10%; }
+        .close-view { position: absolute; top: 20px; right: 20px; cursor: pointer; background: var(--olive-green); color: white; padding: 10px; border-radius: 50%; }
+        .detail-container { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; margin-top: 30px; }
+        .main-detail-img { width: 100%; border-radius: 10px; height: 400px; object-fit: cover; border: 1px solid #ddd; }
+        
+        /* Thumbnail Gallery */
+        .thumb-gallery { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 15px; }
+        .thumb-img { width: 100%; height: 70px; object-fit: cover; border-radius: 5px; cursor: pointer; opacity: 0.6; transition: 0.3s; border: 2px solid transparent; }
+        .thumb-img:hover, .thumb-img.active { opacity: 1; border-color: var(--olive-green); }
+
+        .page-content { display: none; }
+        .page-content.active { display: block; }
+        
+        footer { background: #1a230e; color: white; padding: 50px 10%; text-align: center; }
+        .whatsapp-float { position: fixed; bottom: 30px; right: 30px; background: #25D366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 999; }
+
+        @media (max-width: 768px) {
+            .detail-container { grid-template-columns: 1fr; }
+            .thumb-gallery { grid-template-columns: repeat(4, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+    <a href="https://wa.me/917004029506" class="whatsapp-float" target="_blank"><i data-lucide="message-circle"></i></a>
+
+    <header>
+        <div class="logo" onclick="navigateTo('home')"><i data-lucide="leaf"></i> Siddhi Jutex</div>
+        <nav>
+            <ul>
+                <li><a onclick="navigateTo('home')">Home</a></li>
+                <li><a onclick="navigateTo('products')">Products</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div id="page-router">
+        <div id="home-page" class="page-content active">
+            <section class="hero">
+                <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1620619767323-b95a89183081?q=80&w=1470')">
+                    <div class="hero-content">
+                        <h1>Premium Jute Collection</h1>
+                        <p>Export quality fabrics and handcrafted bags.</p><br>
+                        <a onclick="navigateTo('products')" class="cta-btn">Explore Products</a>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div id="products-page" class="page-content">
+            <section>
+                <div class="section-title">
+                    <h2>Our Exclusive Products</h2>
+                    <p>Sustainable. Durable. Eco-Friendly.</p>
+                </div>
+                <div class="product-grid" id="product-container">
+                    </div>
+            </section>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Siddhi Jutex Creative Enterprises. All Rights Reserved.</p>
+    </footer>
+
+    <div id="product-view">
+        <div class="close-view" onclick="closeProductDetail()"><i data-lucide="x"></i></div>
+        <div id="product-detail-content"></div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        // Updated Product Data - Only 2 Products
+        const products = [
+            { 
+                id: 1, 
+                name: "Premium Jute Fabrics", 
+                desc: "High-grade natural jute fiber fabrics for industrial and decorative use.",
+                fullDesc: "Our jute fabrics are woven with precision, offering high tensile strength and durability. Perfect for upholstery, curtains, and eco-friendly packaging solutions.",
+                specs: "Material: 100% Natural Jute, Width: 45-60 inches, GSM: 150-400",
+                img: "https://www.premchandjute.com/assets/img/p1.jpg"
+            },
+            { 
+                id: 2, 
+                name: "Designer Jute Bags", 
+                desc: "Stylish and eco-friendly bags for shopping and branding.",
+                fullDesc: "Eco-friendly alternative to plastic. These bags feature reinforced handles and can be customized with high-quality screen printing for corporate branding.",
+                specs: "Handle: Cotton Rope, Lamination: Food-safe LDPE, Size: Custom",
+                img: "https://www.premchandjute.com/assets/img/px2.jpg"
+            }
+        ];
+
+        function navigateTo(page) {
+            document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
+            document.getElementById(`${page}-page`).classList.add('active');
+            window.scrollTo(0,0);
+        }
+
+        // Load Products
+        const container = document.getElementById('product-container');
+        products.forEach(p => {
+            container.innerHTML += `
+                <div class="product-card">
+                    <div class="p-img"><img src="${p.img}"></div>
+                    <div class="p-info">
+                        <h3>${p.name}</h3>
+                        <p>${p.desc}</p><br>
+                        <button class="cta-btn" onclick="openProductDetail(${p.id})">View Details</button>
+                    </div>
+                </div>
+            `;
+        });
+
+        function openProductDetail(id) {
+            const p = products.find(x => x.id === id);
+            const detailView = document.getElementById('product-view');
+            const content = document.getElementById('product-detail-content');
+
+            // Generate 10 dummy sub-images (using a placeholder for demo)
+            let thumbsHtml = '';
+            for(let i=1; i<=10; i++) {
+                thumbsHtml += `<img src="${p.img}?sig=${i}" class="thumb-img" onclick="updateMainImg(this.src)" alt="view ${i}">`;
+            }
+
+            content.innerHTML = `
+                <div class="detail-container">
+                    <div>
+                        <img src="${p.img}" class="main-detail-img" id="mainImg">
+                        <div class="thumb-gallery">${thumbsHtml}</div>
+                    </div>
+                    <div>
+                        <h2 style="color:var(--olive-green)">${p.name}</h2>
+                        <p style="margin: 20px 0; color: #555;">${p.fullDesc}</p>
+                        <h4>Specifications:</h4>
+                        <p style="background:#f4f4f4; padding:15px; border-radius:5px; margin-top:10px;">${p.specs}</p>
+                        <br>
+                        <a href="https://wa.me/917004029506?text=I am interested in ${p.name}" class="cta-btn">Inquire on WhatsApp</a>
+                    </div>
+                </div>
+            `;
+            detailView.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function updateMainImg(src) {
+            document.getElementById('mainImg').src = src;
+        }
+
+        function closeProductDetail() {
+            document.getElementById('product-view').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    </script>
+</body>
+</html>
